@@ -1,0 +1,113 @@
+{% extends 'header.html' %}
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ERP Admin</title>
+	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+	<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  
+</head>
+<body>
+<!-- Begin Page Content -->
+        <div class="container-fluid mt-4">
+          <div class="card shadow mb-4">
+            <div class="card-header">
+            	<a href="{% url 'addExpeses' %}" class="btn btn-sm btn-primary float-right ml-2">Paid Expeses</a>
+
+              <span class="font-weight-bold text-primary">Show Paid Expeses</span>
+
+              <form method="get" action="" class="d-none d-sm-inline-block form-inline mr-2 ml-md-2 my-2 my-md-0  navbar-search ml-2" >
+                {% csrf_token %}
+              <div class="input-group">
+                <input type="text" class="form-control border-0 small" placeholder="Search for..." name="search" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-search fa-sm"></i></button>
+                </div>
+              </div>
+            </form>
+            
+            </div>
+             {% if messages %}
+                    <span class="text-success font-weight-bold text-center mt-1">
+                      {% for message in messages %}
+                        {{ message }}
+                      {% endfor %}
+                    </span>
+                  {% endif %}
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered"  width="100%" cellspacing="0">
+                  <thead>
+                    <tr class="text-center">
+                        <th scope="col">Sr No</th>
+                        <th scope="col">Paid Expeses</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Updated At</th>
+                    
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr class="text-center">
+                        <th scope="col">Sr No</th>
+                        <th scope="col">Paid Expeses</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Updated At</th>
+                        
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <tr>
+                    
+                    {% for i in object_list %} 
+                    </tr>                     
+                    <tr class="text-center font-weight-bold"">
+                      <td>{{forloop.counter}}</td>
+                      <td>{{i.expenses | title }}</td> 
+                      <td>{{i.expenses_amount}}</td>
+                      <td>{{i.desc}}</td>
+                      <td class="text-danger">{{i.created_at}}</td>   
+                      <td class="text-danger">{{i.updated_at}}</td>                   
+                     
+                    </tr> 
+                    {% endfor %}                 
+                   
+                  </tbody>
+                </table>  
+                <nav aria-label="Page navigation example">
+                  {% if is_paginated %}
+                  <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+                    {% endif %}
+
+                    <li class="page-item active"><span class="page-link">{{page_obj.number}}</span></li>
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
+                    {% endif %}
+                  </ul>
+                  {% endif %}
+                </nav>                                
+              </div>
+            </div>
+          </div>
+</div>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% endblock %}
+</body>
+</html>
+
+ 
+
+
+
+ 

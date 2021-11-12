@@ -1,0 +1,129 @@
+{% extends 'header.html' %}
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ERP Admin</title>
+	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+	<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  
+</head>
+<body>
+<!-- Begin Page Content -->
+        <div class="container-fluid mt-4">
+          <div class="card shadow mb-4">
+            <div class="card-header">
+              <span class="font-weight-bold text-primary text-center">Daily Statement</span>
+            </div>
+            <div class="card-header">
+              <form method="post" action="{% url 'expensesAndGainsReport' %}" target="blank">
+                {% csrf_token %}             
+              <div class="form-row">
+                {% for field in form.visible_fields %}
+                <div class="form-group col-md-2">
+                  <label for="id_{{ field.name }}" class="control-label font-weight-bold">
+                    {{ field.label }}</label>
+                      <div class="mb-2">{{ field }}</div>
+                   {% if field.errors %}{{ field.errors }}{% endif %}
+                </div>
+                {% endfor %}              
+                <div class="d-sm-flex align-items-center justify-content-between mt-1 ml-1">
+                 <button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</button>
+                </div>
+              </div>
+              </form>
+            </div>
+            
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered"  width="100%" cellspacing="0">
+                  <thead>
+                    <tr class="text-center">
+                        <th scope="col">Perticular</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Incoming</th>
+                        <th scope="col">Outgoing</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr class="text-center">
+                        <th scope="col">Perticular</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Incoming</th>
+                        <th scope="col">Outgoing</th>
+                    </tr>
+                  </tfoot>                  
+                  <tbody> 
+                    <tr><td colspan="4" class="text-center text-danger font-weight-bold">Income Detials</td></tr>
+                    {% for i in order_income_list %}                      
+                    <tr class="text-center font-weight-bold">
+                      <td>{{i.item_name | title }}</td>
+                      <td>{{i.created_at}}</td>
+                      <td>{{i.item_total}}</td>
+                      <td>-</td>                   
+                    </tr> 
+                    {% endfor %}
+                    <tr><td colspan="4" class="text-center text-danger font-weight-bold">Expenses List</td></tr>
+                    {% for i in expenses_list %}                      
+                    <tr class="text-center font-weight-bold">
+                      <td>{{i.expenses | title }}</td>
+                      <td>{{i.created_at}}</td>
+                      <td>-</td>
+                      <td>{{i.expenses_amount}}</td>                   
+                    </tr> 
+                    {% endfor %}
+
+                    <tr><td colspan="4" class="text-center text-danger font-weight-bold">Stock Expenses</td></tr>
+                    {% for i in stock_expeses_list %}                      
+                    <tr class="text-center font-weight-bold">
+                      <td>{{i.stock_item | title }}</td>
+                      <td>{{i.created_at}}</td>
+                      <td>-</td>
+                      <td>{{i.price}}</td>                   
+                    </tr> 
+                    {% endfor %}
+                   
+                  </tbody>
+                </table>  
+                <nav aria-label="Page navigation example">
+
+                  {% if is_paginated %}
+                  <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                      <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                      {% if page_obj.number == i %}
+                        <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only page-link">(current)</span></span></li>
+                      {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                      <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                    {% endif %}
+                  </ul>
+                {% endif %}
+                </nav>                                
+              </div>
+            </div>
+          </div>
+</div>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% endblock %}
+</body>
+</html>
+
+ 
+
+
+
+ 

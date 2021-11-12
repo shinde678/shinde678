@@ -1,0 +1,107 @@
+{% extends 'header.html' %}
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ERP Admin</title>
+	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+	<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  
+</head>
+<body>
+<!-- Begin Page Content -->
+        <div class="container-fluid mt-4">
+          <div class="card shadow mb-4">
+            <div class="card-header">
+            	
+              {% for i in date_obj %}
+                <a href="{% url 'orderReportPDF' i.id %}" class="btn btn-sm btn-danger float-right ml-2" target="_blank"><i class="fa fa-file-pdf mr-1"></i>PDF</a>
+                <a href="{% url 'orderReportCSV' i.id %}" class="btn btn-sm btn-success float-right"><i class="fa fa-file-excel mr-1"></i>CSV</a>
+              {% endfor %}
+             
+
+            
+
+              <span class="font-weight-bold text-primary">Show Order</span>              
+              {% for i in date_obj %}
+                  <span class="font-weight-bold text-danger"><center>DATE : {{i.master_date}}</center></span>
+              {% endfor %}        
+            </div>           
+            
+             {% if messages %}
+                    <span class="text-success font-weight-bold text-center mt-1">
+                      {% for message in messages %}
+                        {{ message }}
+                      {% endfor %}
+                    </span>
+                  {% endif %}
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered"  width="100%" cellspacing="0">
+                  <thead>
+                    <tr class="text-center bg-secondary text-white">
+                        <th scope="col">Sr No</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr> 
+                      {% for j in split_order %}                   
+                      <td colspan="5" class="bg-light font-weight-bold text-center">Bill No : {{j.invoice_no}}</td>
+                        {% for i in order_list %} 
+                          {% if i.invoice_no == j.invoice_no %}                                    
+                          <tr class="text-center font-weight-bold">
+                            <td>{{forloop.counter}}</td>                            
+                            <td>{{i.item_name | title}}</td>  
+                            <td>{{i.item_price}}</td>   
+                            <td>{{i.item_qty}}</td>  
+                            <td>{{i.item_total}}</td>                  
+                          </tr> 
+                          {% endif %}                           
+                        {% endfor %}  
+                        <tr class="bg-light">
+                          <td class="text-center font-weight-bold">Total</td>
+                          <td colspan="2"></td>
+                          <td class="text-center font-weight-bold">{{j.invoice_item_quantity}}</td>
+                          <td class="text-center font-weight-bold">Rs. {{j.invoice_item_final_total}}</td>
+                        </tr>                      
+                    {% endfor %}     
+                   
+                  </tbody>
+                </table>  
+                <nav aria-label="Page navigation example">
+                  {% if is_paginated %}
+                  <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+                    {% endif %}
+
+                    <li class="page-item active"><span class="page-link">{{page_obj.number}}</span></li>
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
+                    {% endif %}
+                  </ul>
+                  {% endif %}
+                </nav>                                
+              </div>
+            </div>
+          </div>
+</div>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% endblock %}
+</body>
+</html>
+
+ 
+
+
+
+ 

@@ -1,0 +1,81 @@
+<head>
+    <style>
+        @page {
+            size: a4 portrait;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 50pt; width: 512pt; top: 30pt; height: 80pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: center;
+      padding: 5px;
+      font-size: 15px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+    </head>
+    <body>
+        <div id="header_content">
+            <b style="font-size: 15px; text-align: center;">M/S Rakesh Ramakant Kulkarni</b>
+            <br>
+            <b style="font-size: 12px; text-align: center;">(Farm Fresh Fruits & Vegitables Supplier)</b>
+            <h2 align="center">A/p. Dhumalwadi, Tal Phaltan, Dist Satara(Maharashtra)</h2>
+        </div>
+    
+        <div id="footer_content">(c) - page <pdf:pagenumber>of <pdf:pagecount>
+        </div>
+     
+        <hr>
+        <table>
+            <tr>
+                <th scope="col">Sr No</th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+            </tr>
+            <tr> 
+                {% for j in split_order %}                   
+                    <td colspan="5"><b>Bill No : {{j.invoice_no}}</b></td>
+                        {% for i in order_list %} 
+                            {% if i.invoice_no == j.invoice_no %}                                    
+                                <tr>
+                                    <td>{{forloop.counter}}</td>                            
+                                    <td>{{i.item_name | title}}</td>  
+                                    <td>{{i.item_price}}</td>   
+                                    <td>{{i.item_qty}}</td>  
+                                    <td>{{i.item_total}}</td>                  
+                                </tr> 
+                          {% endif %}                           
+                        {% endfor %}  
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td colspan="2"></td>
+                        <td><b>{{j.invoice_item_quantity}}</b></td>
+                        <td><b>Rs. {{j.invoice_item_final_total}}</b></td>
+                    </tr>                      
+                {% endfor %}     
+           
+        </table>
+        <hr>
+    </body>
+    </html>

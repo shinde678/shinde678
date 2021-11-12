@@ -1,0 +1,103 @@
+{% extends 'header.html' %}
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ERP Admin</title>
+	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+	<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/errors.css' %}" rel="stylesheet">
+ 
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="card shadow mb-1">
+            <div class="card-header">
+            	<form method="GET"  id="insert_form" style="margin-bottom: 10px;">  
+                    {% csrf_token %}
+                    <div class="form-inline">
+                  <div class="form-group mb-1">   
+                  <label>From Date</label>&nbsp;     
+                    <input type="date" class="form-control" id="fromdate" name="fromdate" value="From Date" required>
+                  </div>
+                  <div class="form-group mx-sm-3 mb-1">
+                    <label>To Date</label>&nbsp;
+                    <input type="date" class="form-control" id="todate" name="todate" placeholder="To Date" required>
+                  </div>
+                  <button type="submit" name="create_pdf" class="btn btn-success my-1">Go</button>
+                </form>
+            </div>           
+        </div>
+          <canvas id="myChart"></canvas>
+        
+	</div>
+
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        $('#insert_form').on("submit", function(event){  
+            event.preventDefault();  
+            var url = '/polls/api/chart/filterdata';
+            $.ajax({  
+                url: url,  
+                method:"GET",  
+                data:$('#insert_form').serialize(),
+
+                success:function(data){ 
+                console.log(data.labels)
+                console.log(data.defaultData)
+                labels = data.labels  
+                defaultData = data.defaultData            
+                        
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                    labels: labels,
+                        datasets: [{
+                            label: '# Of Quantity',
+                            data: defaultData,
+                            backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],                  
+                        
+                            borderWidth: 1
+                        }]
+                    },                                
+                });
+                    },
+                    error:function(error_data) {
+                    alert("Error")
+                    console.log(error_data)
+                }  
+            });  
+        });  
+    });
+</script>
+
+    {% endblock %}
+  </body>
+</html>
+ 
+
+
+
+ 

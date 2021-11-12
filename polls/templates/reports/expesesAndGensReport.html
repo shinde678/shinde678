@@ -1,0 +1,95 @@
+<head>
+    <style>
+        @page {
+            size: a4 portrait;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 50pt; width: 512pt; top: 30pt; height: 80pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: center;
+      padding: 5px;
+      font-size: 15px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+    </head>
+    <body>
+        <div id="header_content">
+            <b style="font-size: 15px; text-align: center;">M/S. Rakesh Ramakant Kulkarni </b>
+            <br>
+            <b style="font-size: 12px; text-align: center;">(Yash Amrutulya Snacks and Corners Restaurant )</b>
+            <h2 align="center">A/p. Phaltan, Tal Phaltan, Dist Satara(Maharashtra)</h2>
+        </div>
+    
+        <div id="footer_content">(c) - page <pdf:pagenumber>of <pdf:pagecount>
+        </div>
+     
+        <hr>
+        <table>
+            <tr>
+                <th>Perticular</th>
+                <th>Date</th>
+                <th>Incoming</th>
+                <th>Outgoing</th>
+            </tr>
+            <tr>        
+                <td colspan="4">Income Detials</td>
+            </tr>
+                {% for i in order_data %}                      
+                    <tr>
+                        <td>{{i.item_name | title }}</td>
+                        <td>{{i.created_at}}</td>
+                        <td>{{i.item_total}}</td>
+                        <td>-</td>                   
+                    </tr> 
+                {% endfor %}
+
+                <tr>
+                    <td colspan="4">Expenses List</td>
+                </tr>
+
+                {% for i in exp_data %}                      
+                <tr>
+                    <td>{{i.expenses | title }}</td>
+                    <td>{{i.created_at}}</td>
+                    <td>-</td>
+                    <td>{{i.expenses_amount}}</td>                   
+                </tr> 
+                {% endfor %}
+
+                <tr>
+                    <td colspan="4">Stock Expenses</td>
+                </tr>
+                {% for i in stock_master_data %}                      
+                <tr>
+                    <td>{{i.stock_item | title }}</td>
+                    <td>{{i.created_at}}</td>
+                    <td>-</td>
+                    <td>{{i.price}}</td>                   
+                </tr> 
+                {% endfor %}
+               
+        </table>
+        <hr>
+    </body>
+    </html>

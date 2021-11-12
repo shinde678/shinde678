@@ -1,0 +1,239 @@
+{% extends 'header.html' %}
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ERP Admin</title>
+	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+	<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/errors.css' %}" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+  
+
+</head>
+<body>
+  <div class="container-fluid">
+	  <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary text-center">Add Item</h6>
+      </div>
+      <div class="card-body">     
+       
+          <article class="card-body mx-auto">
+            <form method="POST" action="{% url 'createOrder' %}" autocomplete="off">
+              {% csrf_token %} 
+              {% if last_invoice %} 
+              {% for i in last_invoice %}
+                <span class="text-danger font-weight-bold">Bill No : {{i.id}}</span>
+                <input type="hidden" name="billno" value="{{i.id}}">               
+              {% endfor %}
+              {% else %}
+              <span class="text-danger font-weight-bold">Bill No : 1</span>
+              {% endif %}
+            <table class="table table-bordered"id="item_table">
+              <thead>
+                  <tr class="text-center">
+                    <th data-card style="width: 30%;">Select Menu</th>
+                    <th data-card style="width: 15%;">Price</th>
+                    <th data-card style="width: 10%;"> Quantity</th>                   
+                    <th data-card style="width: 15%;">Total</th>  
+                    <th data-card style="width: 15%;"><i class="fa fa-times text-danger"></i></th>                  
+                  </tr>
+                </thead> 
+              </table>
+
+              <table class="table table-bordered table">  
+                <tr> 
+                  <td data-card style="width: 53%;"></td>
+                  <td data-card style="width: 11.8%;"> <span class="total_qty font-weight-bold col-md-2 ml-1 text-success"></span></td>                  
+                  <td>                    
+                    <span class="net_total font-weight-bold col-md-2 ml-1 text-success"></span>
+                      <input type="hidden" name="finaltotal" id="finaltotal">
+                      <input type="hidden" name="quantity" id="quantity">
+
+                  </td>
+                   <td data-card style="width: 17.8%;" align="center"><i class="fa fa-plus-circle text-success add" style="cursor:pointer;"></i></td>                 
+                </tr>
+            </table>      
+            <div class="mb-3">
+             <center><input id="submitbtn" class="btn btn-success" disabled="disabled"  type="submit" value="Save" /></center>
+          </div>   
+          </form> 
+          </div>
+          
+              </article>
+            </div>
+          </div>
+      </div>
+    </div>
+    </div>
+	</div>
+  
+<script src="{% static 'js/bootstrap.min.js' %}" ></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+  
+<script>
+  $(document).ready(function(){
+  
+
+// Add Dynamic filed 
+    var count = 0;
+    var qty = 1;
+    $(document).on('click', '.add', function(){
+      count++;
+    if ($('#submitbtn').is(':disabled')) {
+    	$('#submitbtn').removeAttr('disabled');
+    } else {
+      if(count<0){
+    	$('#submitbtn').attr('disabled', 'disabled');
+    }
+    }
+
+  
+      var html = '';
+      html += '<tr class="text-center">';
+
+      html += '<td><select class="form-control selectbox" id="selectbox" name="menu_name[]"  data-sub_category_id="'+count+'" required><option value="">Select Item</option>{% for i in menus %}<option value="{{i.id}}">{{i.menu_name}}</option>{% endfor %}</select></td>';
+
+      html += '<td><input type="text" name="item_price[]" class="form-control itemprice" id="item_price'+count+'" required><div class="font-weight-bold" id="itemprice'+count+'"></div></td>';   
+
+      html += '<td><input type="text" name="item_quantity[]" class="form-control item_qty" id="item_quantity" required value="'+qty+'"></td>';
+
+      html += '<td><input type="text" name="item_total[]" class="form-control itemtotal" id="item_total'+count+'" readonly><div class="font-weight-bold" id="itemprice'+count+'"></div></td>';   
+  
+      html += '<td><i class="fa fa-trash-alt remove text-danger" style="cursor:pointer;"></i></td></tr>';
+
+      $('#item_table').append(html);
+    });
+    
+    //Remove Field
+    $(document).on('click', '.remove', function(){
+      $(this).closest('tr').remove();
+      count--;
+      if(count<1){
+    	$('#submitbtn').attr('disabled', 'disabled');
+    }
+      net_total();
+    });
+//End Remove Field
+
+// Chnage price calculate total
+
+  $("body").delegate(".itemprice", "keyup", function(event){
+    event.preventDefault()
+    var row = $(this).parent().parent()
+    var price = row.find('.itemprice').val();
+    var qty = row.find('.item_qty').val();
+    
+    if (isNaN(qty)) {
+        qty = 1;
+    };
+    if (qty < 1) {
+      qty = 1;
+    };
+
+    if(price==''){
+      row.find('.itemtotal').val(0)
+    }else{
+    var total = parseInt(price) * parseInt(qty); 
+    row.find('.itemtotal').val(total);   
+    var net_total=0;
+    var net_qty = 0
+    // Total calculations
+    $('.itemtotal').each(function(){
+      net_total += ($(this).val()-0);
+    })
+    $('.net_total').html('Total: <i class="fa fa-rupee-sign"></i>&nbsp;'+net_total);
+    $('#finaltotal').val(net_total);
+
+    // Item Calculations
+    $('.item_qty').each(function(){
+      net_qty += ($(this).val()-0);
+    })
+    $('.total_qty').html('Qty :&nbsp;'+net_qty);
+    $('#total_qty').val(net_qty);
+    $('#quantity').val(net_qty);
+
+  }
+  });
+// End chnage price content 
+
+// Chnage Qty content
+    $("body").delegate(".item_qty","keyup",function(event){
+    var row = $(this).parent().parent()
+    var qty = row.find('.item_qty').val();
+    var price = row.find('.itemprice').val();
+
+    var total = parseInt(price) * parseInt(qty);
+    row.find('.itemtotal').val(total)
+    
+    if(qty>100){
+      alert("Only 100 quantity avable.")
+    }
+    if(qty==''){
+      row.find('.itemtotal').val(0)
+    }else{
+    var net_qty = 0
+    $('.item_qty').each(function(){
+      net_qty += ($(this).val()-0);
+    })
+    $('.total_qty').html('Qty :&nbsp;'+net_qty);
+    $('#quantity').val(net_qty);
+
+    var total = parseInt(price) * parseInt(qty); 
+    row.find('.itemtotal').html('Total : <i class="fa fa-rupee-sign"></i>&nbsp;'+total);   
+    var net_total=0;
+    var net_qty = 0
+    // Total calculations
+    $('.itemtotal').each(function(){
+      net_total += ($(this).val()-0);
+    })
+    $('.net_total').html('Total: <i class="fa fa-rupee-sign"></i>&nbsp;'+net_total);
+    $('#finaltotal').val(net_total);
+  }
+  });
+// End chnage qty 
+    
+
+//Calculate net total
+  net_total();
+  function net_total(){
+    var row = $(this).parent().parent()
+    var qty = row.find('.item_qty').val();
+    var price = row.find('.itemprice').val();
+
+    var net_qty = 0
+    $('.item_qty').each(function(){
+      net_qty += ($(this).val()-0);
+    })
+    $('.total_qty').html('Qty :&nbsp;'+net_qty);
+    $('#quantity').val(net_qty);
+
+    var total = parseInt(price) * parseInt(qty);
+    row.find('.itemtotal').val(total)
+
+    var total = parseInt(price) * parseInt(qty); 
+    row.find('.itemtotal').html('Total : <i class="fa fa-rupee-sign"></i>&nbsp;'+total);   
+    var net_total=0;
+    var net_qty = 0
+    // Total calculations
+    $('.itemtotal').each(function(){
+      net_total += ($(this).val()-0);
+    })
+    $('.net_total').html('Total: <i class="fa fa-rupee-sign"></i>&nbsp;'+net_total);
+    $('#finaltotal').val(net_total);
+}
+//End calculate total
+
+
+});
+</script>
+    
+  {% endblock %}
+  </body>
+</html>
+ 

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      
+      <style>
+          * {
+    font-size: 12px;
+    font-family: 'Times New Roman';
+}
+
+td,
+th,
+tr,
+table {
+    border-top: 1px solid black;
+    border-collapse: collapse;
+}
+
+td.description,
+th.description {
+    width: 75px;
+    max-width: 75px;
+}
+
+td.quantity,
+th.quantity {
+    width: 40px;
+    max-width: 40px;
+    word-break: break-all;
+}
+
+td.price,
+th.price {
+    width: 40px;
+    max-width: 40px;
+    word-break: break-all;
+}
+
+.centered {
+    text-align: center;
+    align-content: center;
+}
+
+.ticket {
+    width: 155px;
+    max-width: 155px;
+}
+
+.font-weight-bold {
+    font-weight: 700!important;
+}
+
+@media print {
+    .hidden-print,
+    .hidden-print * {
+        display: none !important;
+    }
+}
+      </style>
+      
+    </head>
+    <body>
+        <div class="ticket">
+            <p class="centered font-weight-bold">Sri Restaurant
+                <br>Phaltan
+                <br>Mobile No : 9112091020</p>
+                <hr>
+                {% for i in last_invoice %}
+                    <p class="font-weight-bold centered" style="float: right;">{{i.created_at}}
+                {% endfor %}
+          
+                {% for i in last_invoice %}
+                    BILL No : {{i.invoice_no}}
+                {% endfor %}
+        </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="description">Item</th>
+                        <th class="quantity">Qty</th>
+                        <th class="price">Price</th>
+                        <th class="price">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in last_order %}                    
+                    <tr class="centered">
+                      <td class="description">{{i.item_name | title }}</td>
+                      <td class="quantity">{{i.item_qty}}</td>
+                      <td class="price">{{i.item_price}}</td>                        
+                      <td class="price">{{i.item_total}}</td>                                         
+                    </tr>              
+                    {% endfor %}
+                    {% for i in last_invoice %}
+                    <tr class="centered">
+                        <td class="font-weight-bold">Total</td>
+                        <td class="quantity font-weight-bold">{{i.invoice_item_quantity}}</td>
+                        <td colspan="1"></td>
+                        <td class="price font-weight-bold">{{i.invoice_item_final_total}}</td>
+                    </tr>    
+                {% endfor %}          
+                </tbody>
+            </table>
+            --------------------------------------
+            <p class="centered">Thanks for your purchase!
+                <br>Sri Restaurant
+                <br>Thanks! Welcome Back
+                <br>
+             --------------------------------------
+            </p>
+        </div>
+        <button id="btnPrint" class="hidden-print ">Print</button>
+        <script>
+            const $btnPrint = document.querySelector("#btnPrint");
+            $btnPrint.addEventListener("click", () => {
+            window.print();
+            });
+        </script>
+    </body>
+</html>

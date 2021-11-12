@@ -1,0 +1,66 @@
+<head>
+    <style>
+        @page {
+            size: a4 portrait;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 50pt; width: 512pt; top: 30pt; height: 80pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: center;
+      padding: 5px;
+      font-size: 15px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+    </head>
+    <body>
+        <div id="header_content">
+            <b style="font-size: 15px; text-align: center;">M/S. Rakesh Ramakant Kulkarni </b>
+            <br>
+            <b style="font-size: 12px; text-align: center;">(Yash Amrutulya Snacks and Corners Restaurant )</b>
+            <h2 align="center">A/p. Phaltan, Tal Phaltan, Dist Satara(Maharashtra)</h2>
+        </div>
+    
+        <div id="footer_content">(c) - page <pdf:pagenumber>of <pdf:pagecount>
+        </div>
+     
+        <hr>
+        <table>
+            <tr>
+                <th scope="col">Sr No</th>
+                <th scope="col">Item name</th>
+                <th scope="col"> Use Stock Kg / Qty</th>
+                <th scope="col">Stock Use Date</th>
+            </tr>
+            {% for i in data %}
+                <tr> 
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.stock_item | title }}</td> 
+                    <td>{{i.use_kg_qty}}</td>     
+                    <td>{{i.created_at}}</td> 
+                </tr>
+            {% endfor %}    
+        </table>
+        <hr>
+    </body>
+    </html>

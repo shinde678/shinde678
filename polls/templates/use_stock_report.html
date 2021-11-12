@@ -1,0 +1,109 @@
+{% extends 'header.html' %}
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ERP Admin</title>
+	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+	<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/select2.min.css' %}" rel="stylesheet" /> 
+</head>
+<body>
+<!-- Begin Page Content -->
+        <div class="container-fluid mt-4">
+          <div class="card shadow mb-4">
+            <div class="card-header">            	
+              <span class="font-weight-bold text-primary">Use Stock Report</span>            
+            </div>
+            <div class="card-header">
+                <form method="post" action="{% url 'useStockReport' %}" target="blank">
+                  {% csrf_token %}             
+                <div class="form-row">
+                  {% for field in form.visible_fields %}
+                  <div class="form-group col-md-2">
+                    <label for="id_{{ field.name }}" class="control-label font-weight-bold">
+                      {{ field.label }}</label>
+                        <div class="mb-2">{{ field }}</div>
+                     {% if field.errors %}{{ field.errors }}{% endif %}
+                  </div>
+                  {% endfor %}              
+                  <div class="d-sm-flex align-items-center justify-content-between mt-1 ml-1">
+                   <button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</button>
+                  </div>
+                </div>
+                </form>
+              </div>
+            
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered"  width="100%" cellspacing="0">
+                  <thead>
+                    <tr class="text-center">
+                        <th scope="col">Sr No</th>
+                        <th scope="col">Item name</th>
+                        <th scope="col"> Use Stock Kg / Qty</th>
+                        <th scope="col">Stock Use Date</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr class="text-center">
+                        <th scope="col">Sr No</th>
+                        <th scope="col">Item name</th>
+                        <th scope="col"> Use Stock Kg / Qty</th>
+                        <th scope="col">Stock Use Date</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <tr>
+                    
+                    {% for i in object_list %} 
+                    </tr>                     
+                    <tr class="text-center font-weight-bold"">
+                      <td>{{forloop.counter}}</td>
+                      <td>{{i.stock_item | title }}</td> 
+                      <td>{{i.use_kg_qty}}</td>     
+                      <td>{{i.created_at}}</td>                   
+                    </tr> 
+                    {% endfor %}                 
+                   
+                  </tbody>
+                </table>  
+                <nav aria-label="Page navigation example">
+                  {% if is_paginated %}
+                  <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+                    {% endif %}
+
+                    <li class="page-item active"><span class="page-link">{{page_obj.number}}</span></li>
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
+                    {% endif %}
+                  </ul>
+                  {% endif %}
+                </nav>                                
+              </div>
+            </div>
+          </div>
+</div>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/select2.min.js' %}"></script>
+    <script>
+    $(document).ready(function(){ 
+    $(".selectbox").select2(); 
+    });
+  </script>
+{% endblock %}
+</body>
+</html>
+
+ 
+
+
+
+ 

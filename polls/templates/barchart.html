@@ -1,0 +1,73 @@
+{% extends 'header.html' %}
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ERP Admin</title>
+	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+	<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/errors.css' %}" rel="stylesheet">
+ 
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="col-md-12">
+          <canvas id="myChart"></canvas>
+        </div>
+	</div>
+
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+<script>
+     $(document).ready(function(){
+       var data_url = '/polls/api/chart/data';
+       var defaultData = []
+       var labels = []
+       $.ajax({
+           method: "GET",
+           url:data_url,
+           success:function(data) {
+               labels = data.labels  
+               defaultData = data.defaultData            
+               //dumpdata = data.dumpdata;              
+               var ctx = document.getElementById('myChart').getContext('2d');
+               var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: labels,
+                    datasets: [{
+                        label: '# Of Quantity',
+                        data: defaultData,
+                        backgroundColor: '#6610f2',
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                                             
+                       
+                        borderWidth: 1
+                    }]
+                },
+                
+                
+            });
+           },
+            error:function(error_data) {
+                console.log("error coming")
+               console.log(error_data)
+           }
+       })
+     });
+    
+
+</script>
+
+  {% endblock %}
+  </body>
+</html>
+ 
+
+
+
+ 

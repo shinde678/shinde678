@@ -1,0 +1,231 @@
+{% load static %}
+<html>
+<head>
+  <title>Resstaurant</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+ 
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/other.css' %}" rel="stylesheet">
+</head>
+
+
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dashboard' %}">
+  <div class="sidebar-brand-icon rotate-n-15">
+    <i class="fab fa-java"></i>
+  </div>
+  <div class="sidebar-brand-text mx-3">Restaurant</div>
+  </a>
+
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'dashboard' %}">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span></a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+ 
+  <li class="nav-item active">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+      <i class="fas fa-fw fa fa-chart-area"></i>
+      <span>Data Visualization</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Charts:</h6>
+        <a class="collapse-item" href="{% url 'barCharts' %}">Bar Charts</a>
+        <a class="collapse-item" href="{% url 'lineCharts' %}">Line Charts</a>
+        <a class="collapse-item" href="{% url 'pieCharts' %}">Pie Charts</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item active">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsefilter" aria-expanded="true" aria-controls="collapseTwo">
+      <i class="fas fa-fw fa fa-chart-area"></i>
+      <span>Filter Visualization</span>
+    </a>
+    <div id="collapsefilter" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Charts:</h6>
+        <a class="collapse-item" href="{% url 'barChartsFilter' %}">Bar Charts Filter</a>
+        <a class="collapse-item" href="{% url 'lineChartsFilter' %}">Line Charts</a>
+        <a class="collapse-item" href="{% url 'pieChartsFilter' %}">Pie Charts</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item active">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsereport" aria-expanded="true" aria-controls="collapseTwo">
+      <i class="fas fa-fw fa fa-file"></i>
+      <span>Reports</span>
+    </a>
+    <div id="collapsereport" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Reports:</h6>
+        <a class="collapse-item" href="{% url 'purchaseStock' %}">Stock Purchase Report</a>
+        <a class="collapse-item" href="{% url 'useStock' %}">Stock Use Report</a>
+        <a class="collapse-item" href="{% url 'paidExpesesReport' %}">Paid Expeses Report</a>
+        <a class="collapse-item" href="{% url 'incomeAndGains' %}">Income Outgoing Reports</a>
+      </div>
+    </div>
+  </li>
+    
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'manageMenu' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Manage Menu</span></a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'manageOrder' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Manage Order</span></a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'manageRawMaterial' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Manage Raw Material</span></a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'manageStock' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Manage Stock</span></a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'manageExpenses' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Manage Expenses</span></a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'paidExpeses' %}">
+      <i class="fas fa-fw fa-plus"></i>
+      <span>Paid Expenses</span></a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'viewBills' %}">
+      <i class="fas fa-fw fa fa-list"></i>
+      <span>View Bills</span></a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'viewOrderDetails' %}">
+      <i class="fas fa-fw fa fa-list"></i>
+      <span>View Orders</span></a>
+  </li>
+
+ 
+
+
+<hr class="sidebar-divider">
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+</ul>
+ 
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+       <!-- Main Content -->
+        <div id="content">
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-1 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <span align="center" class="navbar-brand mb-0 h1 text-info"><i class="font-weight-bold" style="color: #D2386C;">Yash Amrutulya Snacks and Corners Restaurant</i><i style="color:  #D2386C;"> (At Phaltan Mahaveer Chauk Near Mudhoji High School)</i></span>
+           <div class="topbar-divider d-none d-sm-block"></div>
+           <!-- Nav Item - User Information -->
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                {% if user.is_authenticated %}                  
+                  <b style="color: #D2386C;">Welcome&nbsp;<i>{{request.user | title}}</i></b>  
+                {% endif %}                
+                </span>               
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                
+                <a class="dropdown-item" href="{% url 'changepass' %}">
+                  <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Change Password
+                </a>
+
+                <a class="dropdown-item" href="{% url 'logout' %}">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+               
+              </div>
+              
+            </li>
+          </ul>
+
+        </nav>
+
+        
+        {% block body %} {% endblock %}
+    </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span> © 2021 All Rights Reserved. Designed And developed By <a href="http://samarthsoftwares.com/" rel="develop">Samarthsoftwares Pvt Ltd</a></span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Bootstrap core JavaScript-->
+  
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+   <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+</body>
+</html>
+
